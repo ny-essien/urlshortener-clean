@@ -1,0 +1,140 @@
+{% extends 'shortener/base.html' %}
+
+{% block title %}Welcome - URL Shortener{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>Welcome to URL Shortener</h1>
+    <p class="hero-subtitle">Create short, memorable URLs for your long links</p>
+    
+    <div class="cta-buttons">
+        {% if user.is_authenticated %}
+            <a href="{% url 'shortener:dashboard' %}" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+                    <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                </svg>
+                Create Short URL
+            </a>
+        {% else %}
+            <a href="{% url 'shortener:signup' %}" class="btn btn-primary">Get Started</a>
+            <a href="{% url 'shortener:login' %}" class="btn btn-secondary">Login</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="features">
+    <div class="feature-card">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+            <path d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+        </svg>
+        <h3>Fast & Easy</h3>
+        <p>Create short URLs in seconds with our simple interface</p>
+    </div>
+    
+    <div class="feature-card">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+            <path d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75zM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75c-1.036 0-1.875-.84-1.875-1.875V8.625zM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75C3.84 21.75 3 20.91 3 19.875v-6.75z" />
+        </svg>
+        <h3>Track Analytics</h3>
+        <p>Monitor your link performance with detailed click analytics</p>
+    </div>
+    
+    <div class="feature-card">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+            <path d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" />
+        </svg>
+        <h3>Secure & Reliable</h3>
+        <p>Your links are safe and always available when you need them</p>
+    </div>
+</div>
+
+{% block extra_css %}
+<style>
+    .hero {
+        text-align: center;
+        padding: 4rem 1rem;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .hero h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 1rem;
+        line-height: 1.2;
+    }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        padding: 2rem 1rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .feature-card {
+        background-color: var(--surface-color);
+        padding: 2rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.2s;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .feature-card svg {
+        width: 48px;
+        height: 48px;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .feature-card h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+        color: var(--text-secondary);
+        line-height: 1.5;
+    }
+
+    @media (max-width: 640px) {
+        .hero h1 {
+            font-size: 2rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.125rem;
+        }
+
+        .cta-buttons {
+            flex-direction: column;
+        }
+
+        .features {
+            gap: 1rem;
+        }
+    }
+</style>
+{% endblock %}
+{% endblock %} 

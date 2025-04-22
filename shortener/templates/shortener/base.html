@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}URL Shortener{% endblock %}</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'shortener/css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="{% url 'shortener:home' %}" class="navbar-brand">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+                    <path d="M3.75 3.75a.75.75 0 0 0-1.5 0v16.5a.75.75 0 0 0 1.5 0V3.75ZM15 12V9a3.75 3.75 0 1 0-7.5 0v3a3.75 3.75 0 0 0 7.5 0Zm-3.75 3.75H9a.75.75 0 0 1-.75-.75v-6a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 .75.75v6a.75.75 0 0 1-.75.75Zm9-6a.75.75 0 0 0-1.5 0V15a.75.75 0 0 0 1.5 0V9.75Z"/>
+                </svg>
+                URL Shortener
+            </a>
+            <div class="navbar-links">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'shortener:dashboard' %}" class="nav-link">Dashboard</a>
+                    <a href="{% url 'shortener:profile' %}" class="nav-link">Profile</a>
+                    <a href="{% url 'shortener:logout' %}" class="btn btn-secondary">Logout</a>
+                {% else %}
+                    <a href="{% url 'shortener:login' %}" class="nav-link">Login</a>
+                    <a href="{% url 'shortener:signup' %}" class="btn btn-primary">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main class="container fade-in">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-error{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html> 

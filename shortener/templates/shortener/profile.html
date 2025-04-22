@@ -1,0 +1,90 @@
+{% extends 'shortener/base.html' %}
+
+{% block title %}Profile - URL Shortener{% endblock %}
+
+{% block content %}
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>Total Links</h3>
+        <div class="value">{{ user.link_set.count }}</div>
+    </div>
+    <div class="stat-card">
+        <h3>Total Clicks</h3>
+        <div class="value">{{ total_clicks }}</div>
+    </div>
+    <div class="stat-card">
+        <h3>Member Since</h3>
+        <div class="value" style="font-size: 1.25rem">{{ user.date_joined|date:"M d, Y" }}</div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="profile-header">
+        <div class="profile-info">
+            <div class="avatar">{{ user.username|make_list|first|upper }}</div>
+            <div class="user-details">
+                <h2>{{ user.username }}</h2>
+                <p class="email">{{ user.email }}</p>
+            </div>
+        </div>
+        <a href="{% url 'shortener:dashboard' %}" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+                <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+            </svg>
+            Create New Link
+        </a>
+    </div>
+</div>
+
+{% block extra_css %}
+<style>
+    .profile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .profile-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .avatar {
+        width: 64px;
+        height: 64px;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    .user-details h2 {
+        margin: 0;
+        color: var(--text-primary);
+    }
+
+    .email {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+    }
+
+    @media (max-width: 640px) {
+        .profile-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .profile-info {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+    }
+</style>
+{% endblock %}
+{% endblock %} 

@@ -1,0 +1,189 @@
+{% extends 'shortener/base.html' %}
+
+{% block title %}Sign Up - URL Shortener{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <h2>Sign Up</h2>
+    
+    <div class="social-auth">
+        <a href="{% url 'social:begin' 'google-oauth2' %}" class="google-btn">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo">
+            <span>Sign up with Google</span>
+        </a>
+    </div>
+    
+    <div class="divider">
+        <span>or</span>
+    </div>
+
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                    <small class="help-text">{{ field.help_text }}</small>
+                {% endif %}
+                {% if field.errors %}
+                    <div class="error-message">
+                        {% for error in field.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+    </form>
+    
+    <div class="auth-links">
+        <p>Already have an account? <a href="{% url 'shortener:login' %}">Login</a></p>
+    </div>
+</div>
+
+<style>
+    .auth-container {
+        max-width: 400px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: var(--background-color);
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .auth-container h2 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        color: var(--secondary-color);
+    }
+
+    .social-auth {
+        margin-bottom: 1.5rem;
+    }
+
+    .google-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #dadce0;
+        border-radius: 0.25rem;
+        background-color: #fff;
+        color: #3c4043;
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .google-btn:hover {
+        background-color: #f8f9fa;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .google-btn:active {
+        background-color: #f1f3f4;
+    }
+
+    .google-btn img {
+        width: 18px;
+        height: 18px;
+    }
+
+    .google-btn span {
+        color: #3c4043;
+        font-weight: 500;
+    }
+
+    .divider {
+        text-align: center;
+        margin: 1.5rem 0;
+        position: relative;
+    }
+
+    .divider::before,
+    .divider::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 45%;
+        height: 1px;
+        background-color: var(--border-color);
+    }
+
+    .divider::before {
+        left: 0;
+    }
+
+    .divider::after {
+        right: 0;
+    }
+
+    .divider span {
+        background-color: var(--background-color);
+        padding: 0 10px;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+
+    .auth-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .form-group label {
+        font-weight: 500;
+        color: var(--text-primary);
+    }
+
+    .form-group input {
+        padding: 0.75rem;
+        border: 1px solid var(--border-color);
+        border-radius: 0.25rem;
+        font-size: 1rem;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.1);
+    }
+
+    .help-text {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+    }
+
+    .error-message {
+        color: var(--error-color);
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+
+    .auth-links {
+        margin-top: 1.5rem;
+        text-align: center;
+    }
+
+    .auth-links a {
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+
+    .auth-links a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %} 
