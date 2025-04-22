@@ -3,96 +3,69 @@
 {% block title %}Dashboard - URL Shortener{% endblock %}
 
 {% block content %}
-<div class="stats-grid">
-    <div class="stat-card">
-        <h3>Total Links</h3>
-        <div class="value">{{ links.count }}</div>
-    </div>
-    <div class="stat-card">
-        <h3>Total Clicks</h3>
-        <div class="value">{{ total_clicks }}</div>
-    </div>
-    <div class="stat-card">
-        <h3>Average Clicks</h3>
-        <div class="value">{{ avg_clicks|default:"0" }}</div>
-    </div>
-</div>
-
-<div class="card">
-    <h2>Create Short URL</h2>
-    <form method="post" class="url-form">
-        {% csrf_token %}
-        {% for field in form %}
-            <div class="form-group">
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
-                {% if field.help_text %}
-                    <small class="help-text">{{ field.help_text }}</small>
-                {% endif %}
-                {% if field.errors %}
-                    <div class="error-message">
-                        {% for error in field.errors %}
-                            {{ error }}
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            </div>
-        {% endfor %}
-        <button type="submit" class="btn btn-primary">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
-                <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
-            </svg>
-            Create Short URL
-        </button>
-    </form>
-</div>
-
-<div class="card">
-    <h2>Your Shortened URLs</h2>
-    {% if links %}
-        <div class="table-container">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Original URL</th>
-                        <th>Short URL</th>
-                        <th>Clicks</th>
-                        <th>Created</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for link in links %}
-                        <tr>
-                            <td>
-                                <a href="{{ link.original_url }}" target="_blank" class="url-link" title="{{ link.original_url }}">
-                                    {{ link.original_url|truncatechars:50 }}
-                                </a>
-                            </td>
-                            <td>
-                                <div class="short-url-container">
-                                    <a href="/{{ link.short_code }}/" target="_blank" class="url-link">
-                                        {{ request.scheme }}://{{ request.get_host }}/{{ link.short_code }}/
-                                    </a>
-                                    <button class="btn btn-secondary copy-btn" data-url="{{ request.scheme }}://{{ request.get_host }}/{{ link.short_code }}/" onclick="copyToClipboard(this)">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
-                                            <path d="M7 3.5A1.5 1.5 0 018.5 2h3.879a1.5 1.5 0 011.06.44l3.122 3.12A1.5 1.5 0 0117 6.622V12.5a1.5 1.5 0 01-1.5 1.5h-1v-3.379a3 3 0 00-.879-2.121L10.5 5.379A3 3 0 008.379 4.5H7v-1z" />
-                                            <path d="M4.5 6A1.5 1.5 0 003 7.5v9A1.5 1.5 0 004.5 18h7a1.5 1.5 0 001.5-1.5v-5.879a1.5 1.5 0 00-.44-1.06L9.44 6.439A1.5 1.5 0 008.378 6H4.5z" />
-                                        </svg>
-                                        Copy
-                                    </button>
-                                </div>
-                            </td>
-                            <td>{{ link.click_count }}</td>
-                            <td>{{ link.created_at|date:"M d, Y" }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <div class="stats-container">
+        <div class="stat-card">
+            <div class="stat-title">Total Links</div>
+            <div class="stat-value">{{ links.count }}</div>
         </div>
-    {% else %}
-        <p class="empty-state">You haven't created any short URLs yet.</p>
-    {% endif %}
-</div>
+        <div class="stat-card">
+            <div class="stat-title">Total Clicks</div>
+            <div class="stat-value">{{ total_clicks }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">Average Clicks</div>
+            <div class="stat-value">{{ avg_clicks }}</div>
+        </div>
+    </div>
+
+    <div class="create-url-section">
+        <h2 class="section-title">Create Short URL</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="original_url" class="form-label">Original url</label>
+                <input type="url" name="original_url" id="original_url" class="form-control" placeholder="Enter your long URL here..." required>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 mr-1" style="width: 1.25rem; height: 1.25rem; margin-right: 0.25rem;">
+                    <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"/>
+                </svg>
+                Create Short URL
+            </button>
+        </form>
+    </div>
+
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Original URL</th>
+                    <th>Short URL</th>
+                    <th>Clicks</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for link in links %}
+                <tr>
+                    <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                        <a href="{{ link.original_url }}" target="_blank" style="color: #4b5563; text-decoration: none; hover:text-decoration: underline;">
+                            {{ link.original_url }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ link.get_short_url }}" target="_blank" style="color: var(--primary-color); text-decoration: none; hover:text-decoration: underline;">
+                            {{ link.get_short_url }}
+                        </a>
+                    </td>
+                    <td>{{ link.click_count }}</td>
+                    <td>{{ link.created_at|date:"M j, Y" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -158,5 +131,4 @@ function copyToClipboard(button) {
     });
 }
 </script>
-{% endblock %}
 {% endblock %} 
